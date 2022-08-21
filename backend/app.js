@@ -1,30 +1,40 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const { errors, celebrate, Joi } = require('celebrate');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const { userRoutes } = require('./routes/users');
 const { cardRoutes } = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const NotFoundError = require('./errors/NotFoundError');
 
 const app = express();
+
+const corsOptions = {
+  origin: '*',
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.use(helmet());
+app.use(cookieParser());
 app.use(express.json());
-
 mongoose.connect('mongodb://localhost:27017/mestodb');
-
+app.use(cors());
 app.use(requestLogger);
 
-app.post('/signup', createUser);
-app.post('/signin', login);
-app.use('/users', userRoutes);
-app.post('/cards', cardRoutes);
-
-app.use(errorLogger);
-
-app.use(errors());
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -49,9 +59,10 @@ app.use('/users', auth, userRoutes);
 app.use('/cards', auth, cardRoutes);
 
 app.all('*', auth, (_req, _res, next) => {
-  next(new NotFoundError('Страница не найдена'));
+  next(new NotFoundError('Страница не  найдена'));
 });
 
+app.use(errorLogger);
 app.use(errors());
 
 app.listen(PORT, () => {

@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'Вставьте ссылку на изображение',
+      message: 'Введите ссылку на изображение',
     },
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: (v) => validator.isEmail(v),
-      message: 'Неверный формат почты',
+      message: 'Неправильный формат почты',
     },
   },
   password: {
@@ -43,12 +43,12 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(email,
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error({ message: 'Неверный логин или пароль' }));
+        return Promise.reject(new Error({ message: 'Неверный email или пароль' }));
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new Error({ message: 'Неверный логин или пароль' }));
+            return Promise.reject(new Error({ message: 'Неверный email или пароль' }));
           }
           return user;
         });
