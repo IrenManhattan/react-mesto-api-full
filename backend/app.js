@@ -23,7 +23,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 mongoose.connect('mongodb://localhost:27017/mestodb');
