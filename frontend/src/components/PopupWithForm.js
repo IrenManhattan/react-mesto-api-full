@@ -1,34 +1,20 @@
-import React from 'react';
+import React from "react";
 
-function PopupWithForm({ name, isOpen, onClose, title, children, buttonText, onSubmit, isLoading, loadingButtonText }) {
-
-  return (
-    <div className={`popup ${isOpen && "popup_opened"}`} id={`popup__${name}`} 
-         onClick={e => (e.currentTarget === e.target) && onClose()}>
-      <div className="popup__container" id={`popup__container-${name}`}>
-        <button type="button" 
-            className="popup__exit" 
-            id={`popup__exit_${name}`}
-            onClick={onClose}
-        ></button>
-        <h2 className="popup__title">{title}</h2>
-        <form 
-            className="popup__form" 
-            name={name} 
-            id={`${name}_form`} 
-            onSubmit={onSubmit}
-          >
-            {children}
-          <button 
-          type="submit" 
-          className="popup__button" 
-          >
-          { isLoading ? loadingButtonText : buttonText }
-          </button>
-        </form>
+function PopupWithForm({ name, isOpen, onClose, title, children, saveButton, onSubmit }) {
+   return (
+      <div className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}>
+         <div className="popup__container">
+            <button className="popup__close" type="button" onClick={onClose} ></button>
+            <h2 className= "popup__heading" > {title} </h2>
+            <form onSubmit={onSubmit} className= "popup__form" name={name} >
+               {children}
+               <button className= "popup__input-save" type="submit" > { saveButton } </button>
+            </form>
+         </div>
       </div>
-    </div>
-  );
+   );
 }
 
-export default PopupWithForm
+export default PopupWithForm;
+
+

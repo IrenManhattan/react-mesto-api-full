@@ -46,7 +46,7 @@ const login = (req, res, next) => {
 
       res.send({ token });
     })
-    .catch(() => next(new AuthorizationError('Неверный email или пароль')));
+    .catch(() => next(new AuthorizationError('Неверные почта или пароль')));
 };
 
 const getUsers = (_, res, next) => {
@@ -65,7 +65,7 @@ const getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Пользователя с таким ID не существует'));
+        next(new ValidationError('Пользователя с таким id нет'));
       } else {
         next(err);
       }
@@ -82,7 +82,7 @@ const getUserId = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Пользователя с таким ID не существует'));
+        next(new ValidationError('Пользователя с таким id нет'));
       } else {
         next(err);
       }

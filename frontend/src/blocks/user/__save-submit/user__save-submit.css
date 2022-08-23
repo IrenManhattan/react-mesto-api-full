@@ -16,7 +16,7 @@
     opacity: 0.8;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 425px) {
     .user__save-submit {
         font-size: 14px;
         line-height: 17px;

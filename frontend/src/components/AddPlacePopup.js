@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading}) {
-   const [name, setName] = useState("");
-   const [link, setLink] = useState("");
+function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+   const [name, setName] = React.useState("");
+   const [link, setLink] = React.useState("");
 
    function handleNameChange(e) {
       setName(e.target.value);
@@ -13,7 +13,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading}) {
       setLink(e.target.value);
    }
 
-   useEffect(() => {
+   React.useEffect(() => {
       setName("");
       setLink("");
    }, [isOpen]);
@@ -26,45 +26,37 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading}) {
 
    return (
       <PopupWithForm
-        title="Новое место"
-        onClose={onClose}
-        isOpen={isOpen}
-        name={"edit_card"}
-        buttonText="Создать"
-        onSubmit={handleSubmit}
-        isLoading={isLoading}
-        loadingButtonText="Сохранение..."
-        >
-        <input
+         name="card"
+         title="Новое место"
+         saveButton="Создать"
+         isOpen={isOpen}
+         onClose={onClose}
+         onSubmit={handleSubmit}
+      >
+         <input
             type="text"
-            placeholder="Название"
-            className="popup__input"
-            id="new-title"
             name="name"
-            minLength="2"
-            maxLength="30"
+            className="popup__field popup__field_card_name"
+            id="card-name-input"
+            minLength={2}
+            maxLength={30}
+            placeholder="Название"
             required
             value={name}
             onChange={handleNameChange}
-        />
-        <span 
-            className="error-message error-message_visible"
-            id="error-new-title"
-        ></span>
-        <input
+         />
+         <span className="card-url-input-error popup__input-error"></span>
+         <input
             type="url"
             placeholder="Ссылка на картинку"
-            className="popup__input"
-            id="new-link"
+            className="popup__field popup__field_card_link"
+            id="card-url-input"
             name="link"
             required
             value={link}
             onChange={handleLinkChange}
-        />
-        <span 
-            className="error-message error-message_visible"
-            id="error-new-link"
-        ></span>
+         />
+         <span className="card-url-input-error popup__input-error"></span>
       </PopupWithForm>
    );
 }

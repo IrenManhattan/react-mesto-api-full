@@ -1,10 +1,10 @@
-import React, {useEffect, useState, useContext} from "react";
+import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
-   const [name, setName] = useState("");
-   const [description, setDescription] = useState("");
+function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+   const [name, setName] = React.useState("");
+   const [description, setDescription] = React.useState("");
 
    function handleNameChange(e) {
       setName(e.target.value);
@@ -14,9 +14,9 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
       setDescription(e.target.value);
    }
 
-   const currentUser = useContext(CurrentUserContext);
+   const currentUser = React.useContext(CurrentUserContext);
 
-   useEffect(() => {
+   React.useEffect(() => {
       setName(currentUser.name || '');
       setDescription(currentUser.about || '');
    }, [currentUser.about, currentUser.name, isOpen]);
@@ -28,50 +28,42 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
    }
 
    return (
-    <PopupWithForm
-      title="Редактировать профиль"
-      onClose={onClose}
-      onSubmit={handleSubmit}
-      isLoading={isLoading}
-      isOpen={isOpen}
-      name="profile"
-      buttonText="Сохранить"
-      loadingButtonText="Сохранение..."
-    >
-      <input
-        type="text"
-        id="new-name"
-        placeholder="Имя"
-        className="popup__input"
-        name="name"
-        minLength="2"
-        maxLength="40"
-        required
-        value={name}
-        onChange={handleNameChange}              
-      />
-      <span 
-        className="error-message error-message_visible"
-        id="error-new-name"
-      ></span>
-      <input
-        type="text"
-        placeholder="Вид деятельности"
-        className="popup__input"
-        id="new-profession"
-        name="about"
-        minLength="2"
-        maxLength="200"
-        required
-        value={description}
-        onChange={handleJobChange}
-      />
-      <span 
-        className="error-message error-message_visible"
-        id="error-new-profession"
-      ></span>
-    </PopupWithForm>
-   )
-   }
+      <PopupWithForm
+         name="profile"
+         title="Редактировать профиль"
+         isOpen={isOpen}
+         saveButton="Сохранить"
+         onClose={onClose}
+         onSubmit={handleSubmit}
+      >
+         <input
+            type="text"
+            placeholder="Имя"
+            className="popup__field popup__field_input_name"
+            id="name-input"
+            name="name"
+            minLength="2"
+            maxLength="40"
+            required
+            value={name}
+            onChange={handleNameChange}
+         />
+         <span className="name-input-error popup__input-error"></span>
+         <input
+            type="text"
+            placeholder="О себе"
+            className="popup__field popup__field_input_job"
+            id="job-input"
+            name="job"
+            minLength="2"
+            maxLength="200"
+            required
+            value={description}
+            onChange={handleJobChange}
+         />
+         <span className="job-input-error popup__input-error"></span>
+      </PopupWithForm>
+   );
+}
 
 export default EditProfilePopup;

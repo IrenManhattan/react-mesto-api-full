@@ -1,5 +1,5 @@
 {
-  "name": "mesto-react",
+  "name": "react-mesto",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -38,16 +38,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^4.0.0",
-    "nodemon": "^2.0.19"
-  },
-  "description": "## Описание: \"Mesto-React-auth\" - интерактивная страница, куда можно добавлять фотографии, удалять их и ставить лайки.. В проектной работе была применена работа с макетом в Figma, построение сложных сеток, разширенные возможности HTML и CSS, работа с формами, написание скриптов на Java Script и React.js",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/IrenManhattan/react-mesto-auth.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "gh-pages": "^3.2.3"
+  }
 }

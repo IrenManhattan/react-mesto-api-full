@@ -5,17 +5,18 @@
     line-height: 29px;
   }
   
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 868px) {
     .user__title {
       font-size: 21px;
       line-height: 25px;
     }
   }
   
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 425px) {
     .user__title {
       font-size: 18px;
       line-height: 22px;
       margin: 0 0 38px;
     }
   }
+  
