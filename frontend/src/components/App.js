@@ -13,7 +13,7 @@ import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
-import * as auth from "../utils/auth";
+import * as auth from "../utils/Auth";
 import { setToken, getToken, removeToken } from "../utils/token";
 import infoTooltip from "./InfoTooltip";
 
