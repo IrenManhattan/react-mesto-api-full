@@ -15,7 +15,7 @@ import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import * as auth from "../utils/Auth";
 import { setToken, getToken, removeToken } from "../utils/token";
-import infoTooltip from "./InfoTooltip";
+import InfoTooltip from "./InfoTooltip";
 
 
 
@@ -29,7 +29,7 @@ const App = () => {
     const [cards, setCards] = React.useState([]);
 
     const [isTooltipPopupOpen, setTooltipPopup] = React.useState(false);
-    const [InfoTooltip, setOnInfoTooltip] = React.useState({});
+    const [onInfoTooltip, setOnInfoTooltip] = React.useState({});
     const [isLogin, setIsLogin] = React.useState(false);
     const [data, setData] = React.useState({
         email: "",
@@ -245,8 +245,8 @@ return (
       <InfoTooltip
           isOpen={isTooltipPopupOpen}
           onClose={closeAllPopups}
-          imgInfo={infoTooltip.img}
-          textInfo={infoTooltip.text}
+          imgInfo={onInfoTooltip.img}
+          textInfo={onInfoTooltip.text}
       />
 
       <EditProfilePopup
