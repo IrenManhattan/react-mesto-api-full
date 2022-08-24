@@ -2,9 +2,10 @@
     margin: 0;
     font-weight: 500;
     padding-right: 24px;
+    color: #fff;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 767px) {
     .header__email {
         padding: 0;
     }

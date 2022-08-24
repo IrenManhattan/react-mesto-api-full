@@ -2,13 +2,13 @@
     max-width: 358px;
 }
 
-@media screen and (max-width: 868px) {
+@media screen and (max-width: 1023px) {
     .user__form {
         max-width: 280px;
     }
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 767px) {
     .user__form {
         max-width: 258px;
     }

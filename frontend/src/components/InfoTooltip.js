@@ -1,24 +1,21 @@
 import React from "react";
-import fail from "../images/fail.svg";
-import success from "../images/success.svg";
 
-const InfoTooltip = ({ isOpen, onClose, onInfoTooltip }) => {
+
+const InfoTooltip = ({ isOpen, onClose, imgInfo, textInfo }) => {
    return (
       <div className={`popup ${isOpen && "popup_opened"}`}>
          <div className="popup__container popup__container_tooltip">
             <button
                type="button"
-               className="popup__close"
+               className="popup__exit"
                onClick={onClose}
             ></button>
             <img
-               src={onInfoTooltip ? success : fail}
+               src={imgInfo}
                alt="info"
             />
-            <p className="popup__profile_tooltip">
-               {onInfoTooltip
-                  ? `Вы успешно зарегистрировались!`
-                  : `Что-то пошло не так! Попробуйте ещё раз.`}
+            <p className="popup__profile-tooltip">
+               {textInfo}
             </p>
          </div>
       </div>

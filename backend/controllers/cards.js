@@ -2,7 +2,7 @@ const Card = require('../models/card');
 
 const NotFoundError = require('../errors/NotFoundError');
 const ValidationError = require('../errors/ValidationError');
-const ForbiddenError = require('../errors/FobiddenError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 const getCards = (_, res, next) => {
   Card.find({})
@@ -38,11 +38,11 @@ const deleteCardId = (req, res, next) => {
         return next(new ForbiddenError('Нет доступа'));
       }
       return Card.findByIdAndRemove(req.params.cardId)
-        .then((cardItem) => res.status(200).send({ data: cardItem, message: 'Карточка  удалена' }));
+        .then((cardItem) => res.status(200).send({ data: cardItem, message: 'Карточка удалена' }));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Невалидный id'));
+        next(new ValidationError('Невалидный ID'));
       } else {
         next(err);
       }
@@ -84,7 +84,7 @@ const dislikeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Невалидный id'));
+        next(new ValidationError('Невалидный ID'));
       } else {
         next(err);
       }
