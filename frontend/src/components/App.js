@@ -8,6 +8,7 @@ import ImagePopup from "./ImagePopup";
 import AddPlacePopup from "./AddPlacePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
+import ConfirmDeletePopup from "./ConfirmDeletePopup";
 
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Login from "./Login";
@@ -16,6 +17,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import * as auth from "../utils/Auth";
 import { setToken, getToken, removeToken } from "../utils/token";
 import InfoTooltip from "./InfoTooltip";
+import fail from "../images/fail.svg";
+import success from "../images/success.svg";
+
 
 
 
@@ -27,9 +31,11 @@ const App = () => {
     const [selectedCard, setSelectedCard] = React.useState({});
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([]);
+    const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] = React.useState(false);
+    const [cardSelectedForDelete, setCardSelectedForDelete] = React.useState({});
 
     const [isTooltipPopupOpen, setTooltipPopup] = React.useState(false);
-    const [onInfoTooltip, setOnInfoTooltip] = React.useState({});
+    const [infoTooltip, setInfoTooltip] = React.useState({});
     const [isLogin, setIsLogin] = React.useState(false);
     const [data, setData] = React.useState({
         email: "",
@@ -67,13 +73,19 @@ const App = () => {
         auth.register(email, password)
             .then(() => {
                 setTooltipPopup(true);
-                setOnInfoTooltip(true);
+                setInfoTooltip({
+                    img: success,
+                    text: 'Вы успешно зарегистрировались!' 
+                  });
                 history.push("/sign-in");
             })
             .catch((res) => {
                 console.log(res);
                 setTooltipPopup(true);
-                setOnInfoTooltip(false);
+                setInfoTooltip({
+                    img: fail,
+                    text: 'Что-то пошло не так! Попробуйте ещё раз.'
+                  });
             });
     };
 
@@ -90,7 +102,10 @@ const App = () => {
             .catch((res) => {
                 console.log(res);
                 setTooltipPopup(true);
-                setOnInfoTooltip(false);
+                setInfoTooltip({
+                    img: fail,
+                    text: 'Что-то пошло не так! Попробуйте ещё раз.'
+                  });
             });
     };
 
@@ -113,6 +128,10 @@ const App = () => {
         }
     };
 
+    function handleConfirmDeleteClick(card) {
+        setCardSelectedForDelete(card);
+        setIsConfirmDeletePopupOpen(!isConfirmDeletePopupOpen);
+    }
 
     function handleCardClick(card) {
         setSelectedCard(card);
@@ -134,8 +153,10 @@ const App = () => {
         setIsEditAvatarPopupOpen(false);
         setIsAddPlacePopupOpen(false);
         setIsEditProfilePopupOpen(false);
+        setIsConfirmDeletePopupOpen(false);
         setSelectedCard({});
         setTooltipPopup(false);
+        setCardSelectedForDelete({});
     }
 
 
@@ -198,8 +219,9 @@ const App = () => {
         api.deleteCard(card._id)
             .then(() => {
                 setCards((cards) => cards.filter((c) => c._id !== card._id));
+                closeAllPopups();
             })
-            .catch((err) => console.log(`Ошибка ${err}`));
+            .catch((err) => console.log(`Ошибка ${err}`))
     };
 
 return (
@@ -208,7 +230,7 @@ return (
       <Header
         signOut={signOut}
           loggedIn={isLogin}
-          email={data.email}
+          email={currentUser.email}
       />
 
       <Switch>
@@ -220,11 +242,13 @@ return (
           cards={cards}
           onCardLike={handleCardLike}
           onCardDelete={handleCardDelete}
+          onConfirmDelete={handleConfirmDeleteClick}
           component={Main}
           loggedIn={isLogin}
           exact
           path="/"
         />
+        
           <Route path="/sign-in">
             <Login handleLogin={handleLogin} />
           </Route>
@@ -245,8 +269,8 @@ return (
       <InfoTooltip
           isOpen={isTooltipPopupOpen}
           onClose={closeAllPopups}
-          imgInfo={onInfoTooltip.img}
-          textInfo={onInfoTooltip.text}
+          imgInfo={infoTooltip.img}
+          textInfo={infoTooltip.text}
       />
 
       <EditProfilePopup
@@ -266,6 +290,13 @@ return (
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
       />
+
+      <ConfirmDeletePopup
+          isOpen={isConfirmDeletePopupOpen}
+          onClose={closeAllPopups}
+          card={cardSelectedForDelete}
+          onCardDelete={handleCardDelete}
+        /> 
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
   </CurrentUserContext.Provider>

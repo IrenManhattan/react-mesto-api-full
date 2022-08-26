@@ -25,7 +25,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
-mongoose.connect('mongodb://localhost:27017/mestodb');
 app.use(cors());
 app.use(requestLogger);
 
@@ -54,19 +53,15 @@ app.post('/signin', celebrate({
 
 app.use(auth);
 
-app.use('/users', auth, userRoutes);
-app.use('/cards', auth, cardRoutes);
+app.use('/users', userRoutes);
+app.use('/cards', cardRoutes);
 
-app.all('*', auth, (_req, _res, next) => {
+app.all('*', (_req, _res, next) => {
   next(new NotFoundError('Страница не  найдена'));
 });
 
 app.use(errorLogger);
 app.use(errors());
-
-app.listen(PORT, () => {
-  console.log(`Поключён ${PORT} порт`);
-});
 
 app.use((err, _req, res, next) => {
   const { statusCode = 500, message } = err;
@@ -74,4 +69,10 @@ app.use((err, _req, res, next) => {
     .status(statusCode)
     .send({ message });
   next();
+});
+
+mongoose.connect('mongodb://localhost:27017/mestodb');
+
+app.listen(PORT, () => {
+  console.log(`Поключён ${PORT} порт`);
 });

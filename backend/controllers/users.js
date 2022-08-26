@@ -4,7 +4,6 @@ const User = require('../models/user');
 
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
-const AuthorizationError = require('../errors/AuthorizationError');
 const ValidationError = require('../errors/ValidationError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -14,9 +13,6 @@ const createUser = (req, res, next) => {
     name, about, avatar, email, password,
   } = req.body;
 
-  if (!email || !password) {
-    return next(new ValidationError('Неверный логин или пароль'));
-  }
   return bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name,
@@ -46,7 +42,7 @@ const login = (req, res, next) => {
 
       res.send({ token });
     })
-    .catch(() => next(new AuthorizationError('Неверный email или пароль')));
+    .catch(next);
 };
 
 const getUsers = (_, res, next) => {
@@ -65,14 +61,14 @@ const getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Пользователя с таким ID не существует'));
+        next(new ValidationError('Некорректный ID пользователя'));
       } else {
         next(err);
       }
     });
 };
 
-const getUserId = (req, res, next) => {
+const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
@@ -82,7 +78,7 @@ const getUserId = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Пользователя с таким ID не существует'));
+        next(new ValidationError('Некорректный ID пользователя'));
       } else {
         next(err);
       }
@@ -148,7 +144,7 @@ module.exports = {
   login,
   getUser,
   getUsers,
-  getUserId,
+  getUserById,
   createUser,
   updateUser,
   updateAvatar,
